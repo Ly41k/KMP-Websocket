@@ -5,9 +5,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import compose.ChatsScreen
 import core.di.LocalPlatform
 import core.di.Platform
+import core.di.PlatformConfiguration
+import di.appModule
+import moe.tlaster.precompose.PreComposeApp
+import navigation.AppNavGraph
+import org.koin.compose.KoinApplication
 import ui.theme.AppTheme
 
 fun main() = application {
@@ -22,11 +26,17 @@ fun main() = application {
 
 @Composable
 fun MainView() {
-    AppTheme {
-        CompositionLocalProvider(
-            LocalPlatform provides Platform.Desktop
-        ) {
-            ChatsScreen()
+    KoinApplication(application = {
+        modules(appModule(configuration = PlatformConfiguration()))
+    }) {
+        PreComposeApp {
+            AppTheme {
+                CompositionLocalProvider(
+                    LocalPlatform provides Platform.Desktop
+                ) {
+                    AppNavGraph()
+                }
+            }
         }
     }
 }

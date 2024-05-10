@@ -1,4 +1,4 @@
-package compose
+package compose.chats
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -19,11 +19,12 @@ import kmpwebsocket.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import presentation.ChatsViewModel
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
-fun ChatsScreen() {
+fun ChatsScreen(viewModel: ChatsViewModel) {
     var showContent by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Button(onClick = { showContent = !showContent }) {
