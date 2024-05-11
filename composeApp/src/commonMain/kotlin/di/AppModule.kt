@@ -1,8 +1,8 @@
 package di
 
 import core.di.PlatformConfiguration
-import data.ktor.KtorWebsocketClient
-import data.ktor.KtorWebsocketClientImpl
+import data.ktor.KtorWebSocketClient
+import data.ktor.WebSocketClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.LogLevel
@@ -28,5 +28,5 @@ fun appModule(configuration: PlatformConfiguration) = module {
 
     factory<ChatsViewModel> { ChatsViewModel(get()) }
 
-    single<KtorWebsocketClient> { KtorWebsocketClientImpl(client = get()) }
+    single<WebSocketClient> { KtorWebSocketClient(client = get()) }
 }

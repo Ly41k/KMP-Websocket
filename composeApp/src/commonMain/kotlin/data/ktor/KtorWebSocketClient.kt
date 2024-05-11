@@ -1,5 +1,6 @@
 package data.ktor
 
+import core.Constants.BASE_WS_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.webSocketSession
 import io.ktor.client.request.url
@@ -16,32 +17,29 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-interface KtorWebsocketClient {
+interface WebSocketClient {
     fun getStateStream(): Flow<String>
     suspend fun sendAction(action: InputMessage)
     suspend fun close()
 }
 
-class KtorWebsocketClientImpl(
+class KtorWebSocketClient(
     private val client: HttpClient
-) : KtorWebsocketClient {
+) : WebSocketClient {
 
     private var session: WebSocketSession? = null
 
     override fun getStateStream(): Flow<String> {
         return flow {
-            session = client.webSocketSession {
-                url("wss://echo.websocket.org")
-            }
-            val messageStates = session!!
-                .incoming
-                .consumeAsFlow()
-                .filterIsInstance<Frame.Text>()
-                .mapNotNull {
-                    it.readText()
-                }
+            session = client.webSocketSession { url(BASE_WS_URL) }
 
-            emitAll(messageStates)
+            val messageStates = session?.let {
+                it.incoming
+                    .consumeAsFlow()
+                    .filterIsInstance<Frame.Text>()
+                    .mapNotNull { it.readText() }
+            }
+            messageStates?.let { emitAll(it) }
         }
     }
 
