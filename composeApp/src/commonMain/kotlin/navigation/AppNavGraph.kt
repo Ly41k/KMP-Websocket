@@ -10,7 +10,7 @@ import compose.chats.ChatsScreen
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
-import presentation.ChatsViewModel
+import presentation.chats.ChatsViewModel
 import ui.theme.AppTheme
 
 @Composable

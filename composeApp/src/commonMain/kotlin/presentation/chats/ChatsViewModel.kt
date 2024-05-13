@@ -1,4 +1,4 @@
-package presentation
+package presentation.chats
 
 import data.ktor.WebSocketClient
 import kotlinx.coroutines.flow.Flow

@@ -11,7 +11,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.plugins.websocket.WebSockets
 import org.koin.dsl.module
-import presentation.ChatsViewModel
+import presentation.chats.ChatsViewModel
 
 fun appModule(configuration: PlatformConfiguration) = module {
     single<PlatformConfiguration> { configuration }
