@@ -1,6 +1,6 @@
-package data.ktor
+package data.ktor.message
 
-import core.Constants.BASE_WS_URL
+import core.utils.Constants.BASE_WS_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.webSocketSession
 import io.ktor.client.request.url
@@ -23,21 +23,19 @@ interface WebSocketClient {
     suspend fun close()
 }
 
-class KtorWebSocketClient(
-    private val client: HttpClient
-) : WebSocketClient {
+class KtorWebSocketClient(private val httpClient: HttpClient) : WebSocketClient {
 
     private var session: WebSocketSession? = null
 
     override fun getStateStream(): Flow<String> {
         return flow {
-            session = client.webSocketSession { url(BASE_WS_URL) }
+            session = httpClient.webSocketSession { url(BASE_WS_URL) }
 
             val messageStates = session?.let {
                 it.incoming
                     .consumeAsFlow()
                     .filterIsInstance<Frame.Text>()
-                    .mapNotNull { it.readText() }
+                    .mapNotNull { frame -> frame.readText() }
             }
             messageStates?.let { emitAll(it) }
         }

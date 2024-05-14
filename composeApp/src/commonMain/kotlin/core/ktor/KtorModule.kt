@@ -1,8 +1,8 @@
 package core.ktor
 
-import core.Constants.BASE_URL
-import core.Constants.QUALIFIER_DEFAULT_HTTP_CLIENT
-import core.Constants.QUALIFIER_WEBSOCKET_HTTP_CLIENT
+import core.utils.Constants.BASE_URL
+import core.utils.Constants.QUALIFIER_DEFAULT_HTTP_CLIENT
+import core.utils.Constants.QUALIFIER_WEBSOCKET_HTTP_CLIENT
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.DefaultRequest

@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Badge
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -32,13 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import presentation.chats.models.ChatGroupItem
-import presentation.chats.models.MessageStatusTypes
+import domain.modes.presentation.chats.ChatItem
 import ui.theme.AppTheme
 
 @Composable
 fun ChatGroupView(
-    item: ChatGroupItem,
+    item: ChatItem,
     onItemClick: () -> Unit
 ) {
 
@@ -74,24 +70,12 @@ fun ChatGroupView(
 
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = item.groupName,
+                    text = item.name,
                     maxLines = 1,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     overflow = TextOverflow.Ellipsis,
                     color = AppTheme.colors.primaryText
-                )
-
-                Icon(
-                    modifier = Modifier.size(14.dp).padding(start = 2.dp),
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = when (item.lastMessageStatus) {
-                        MessageStatusTypes.NONE -> Color.Transparent
-                        MessageStatusTypes.READ -> Color.Green
-                        MessageStatusTypes.SENT,
-                        MessageStatusTypes.DELIVERED -> AppTheme.colors.secondaryText
-                    }
                 )
 
             }
@@ -103,7 +87,7 @@ fun ChatGroupView(
             ) {
                 Text(
                     modifier = Modifier.weight(1f).padding(bottom = 12.dp),
-                    text = item.latestMessage.orEmpty(),
+                    text = item.lastMessage.orEmpty(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,

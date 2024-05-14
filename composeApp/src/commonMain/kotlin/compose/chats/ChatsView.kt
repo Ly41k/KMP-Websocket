@@ -12,8 +12,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import presentation.chats.ChatsViewState
 import presentation.chats.models.ChatsEvent
-import presentation.chats.models.ChatsViewState
 import ui.theme.AppTheme
 import ui.widgets.TopAppBarView
 
@@ -22,7 +22,6 @@ fun MessagesView(
     state: ChatsViewState,
     eventHandler: (ChatsEvent) -> Unit
 ) {
-
     Scaffold(
         topBar = { TopAppBarView { } },
         floatingActionButton = {
@@ -39,7 +38,9 @@ fun MessagesView(
         containerColor = AppTheme.colors.primaryBackground
     ) {
         LazyColumn(modifier = Modifier.padding(it).fillMaxSize()) {
-            items(state.chats) { ChatGroupView(it) { println("OnClick") } }
+            items(state.chatsViewData?.itemModels.orEmpty()) {
+                ChatGroupView(it) { println("OnClick") }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package data.ktor
+package data.ktor.message
 
 import kotlinx.serialization.Serializable
 
