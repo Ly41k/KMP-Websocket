@@ -1,32 +1,24 @@
 package di
 
+import core.Constants.QUALIFIER_DEFAULT_HTTP_CLIENT
+import core.Constants.QUALIFIER_WEBSOCKET_HTTP_CLIENT
 import core.di.PlatformConfiguration
+import core.ktor.ktorModule
 import data.ktor.KtorWebSocketClient
 import data.ktor.WebSocketClient
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.logging.SIMPLE
-import io.ktor.client.plugins.websocket.WebSockets
+import data.ktor.chats.KtorChatsRemoteDataSource
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import presentation.chats.ChatsViewModel
 
 fun appModule(configuration: PlatformConfiguration) = module {
     single<PlatformConfiguration> { configuration }
-
-    single<HttpClient> {
-        HttpClient(CIO) {
-            install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.ALL
-            }
-            install(WebSockets)
-        }
+    includes(ktorModule)
+    factory<ChatsViewModel> { ChatsViewModel(get(), get()) }
+    single<WebSocketClient> { KtorWebSocketClient(client = get(qualifier = named(QUALIFIER_WEBSOCKET_HTTP_CLIENT))) }
+    factory<KtorChatsRemoteDataSource> {
+        KtorChatsRemoteDataSource(get(qualifier = named(QUALIFIER_DEFAULT_HTTP_CLIENT)))
     }
-
-    factory<ChatsViewModel> { ChatsViewModel(get()) }
-
-    single<WebSocketClient> { KtorWebSocketClient(client = get()) }
 }
+
+
