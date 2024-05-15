@@ -9,4 +9,7 @@ object Constants {
 
     const val QUALIFIER_DEFAULT_HTTP_CLIENT: String = "DefaultHttpClient"
     const val QUALIFIER_WEBSOCKET_HTTP_CLIENT: String = "WebSocketHttpClient"
+
+    const val NAV_ARGS: String = "args"
+    const val NAV_ARGS_QUERY_: String = "?$NAV_ARGS="
 }

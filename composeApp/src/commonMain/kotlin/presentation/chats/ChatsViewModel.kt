@@ -2,6 +2,8 @@ package presentation.chats
 
 import core.exception.ExceptionService
 import core.store.ClearableBaseStore
+import core.viewmodel.BaseViewModel
+import core.viewmodel.WrappedStateFlow
 import domain.interactor.ChatsInteractor
 import domain.modes.presentation.chats.ChatItem
 import domain.modes.presentation.message.MessageItem
@@ -18,16 +20,20 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
-import moe.tlaster.precompose.viewmodel.ViewModel
+import kotlinx.serialization.json.Json
 import moe.tlaster.precompose.viewmodel.viewModelScope
+import presentation.chats.models.ChatNavData
+import presentation.chats.models.ChatsAction
+import presentation.chats.models.ChatsEvent
 
 class ChatsViewModel(
     private val chatsInteractor: ChatsInteractor,
     private val exceptionService: ExceptionService,
-    private val messageStore: ClearableBaseStore<List<MessageItem>>
-) : ViewModel() {
+    private val messageStore: ClearableBaseStore<List<MessageItem>>,
+    private val json: Json
+) : BaseViewModel<ChatsViewState, ChatsAction, ChatsEvent>() {
 
-    val state: StateFlow<ChatsViewState> = _state
+    private val state: StateFlow<ChatsViewState> = _state
 
     private val _state: StateFlow<ChatsViewState>
         get() {
@@ -80,6 +86,19 @@ class ChatsViewModel(
                 }
             )
         )
+    }
+
+    override fun viewStates(): WrappedStateFlow<ChatsViewState> = WrappedStateFlow(state)
+
+    override fun obtainEvent(viewEvent: ChatsEvent) {
+        when (viewEvent) {
+            is ChatsEvent.ChatClick -> openChatScreenById(viewEvent.id, viewEvent.title)
+        }
+    }
+
+    private fun openChatScreenById(id: Int, title: String) {
+        val args = ChatNavData(id, title).run { this.getSerializedData(json) }
+        viewAction = ChatsAction.OpenChatScreen(args)
     }
 
     private fun chatDataFlow(): Flow<ChatsViewPartialState> {

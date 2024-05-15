@@ -38,8 +38,10 @@ fun MessagesView(
         containerColor = AppTheme.colors.primaryBackground
     ) {
         LazyColumn(modifier = Modifier.padding(it).fillMaxSize()) {
-            items(state.chatsViewData?.itemModels.orEmpty()) {
-                ChatGroupView(it) { println("OnClick") }
+            items(state.chatsViewData?.itemModels.orEmpty()) { chatItem ->
+                ChatGroupView(chatItem) {
+                    eventHandler.invoke(ChatsEvent.ChatClick(chatItem.id, chatItem.name))
+                }
             }
         }
     }

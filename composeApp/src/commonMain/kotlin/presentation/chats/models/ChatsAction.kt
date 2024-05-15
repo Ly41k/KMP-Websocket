@@ -1,4 +1,5 @@
 package presentation.chats.models
 
-class ChatsAction {
+sealed interface ChatsAction {
+    data class OpenChatScreen(val args: String) : ChatsAction
 }

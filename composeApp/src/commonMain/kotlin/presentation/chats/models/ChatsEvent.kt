@@ -1,4 +1,5 @@
 package presentation.chats.models
 
-class ChatsEvent {
+sealed interface ChatsEvent {
+    data class ChatClick(val id: Int, val title: String) : ChatsEvent
 }

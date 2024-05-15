@@ -6,5 +6,5 @@ import presentation.chats.ChatsViewModel
 
 val presentationModule = module {
     single<MainViewModel> { MainViewModel(get(), get()) }
-    factory<ChatsViewModel> { ChatsViewModel(get(), get(), get()) }
+    factory<ChatsViewModel> { ChatsViewModel(get(), get(), get(), get()) }
 }
