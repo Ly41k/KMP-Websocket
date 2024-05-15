@@ -1,4 +1,9 @@
 package domain.modes.presentation.message
 
-class MessageItem {
-}
+data class MessageItem(
+    val userId: String,
+    val chatId: Int,
+    val chatName: String,
+    val message: String,
+    val isRead: Boolean = false
+)

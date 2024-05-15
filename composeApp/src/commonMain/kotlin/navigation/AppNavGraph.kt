@@ -10,17 +10,21 @@ import compose.chats.ChatsScreen
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
+import presentation.MainViewModel
 import presentation.chats.ChatsViewModel
 import ui.theme.AppTheme
 
 @Composable
 fun AppNavGraph() {
     val navigator = rememberNavigator()
+    koinViewModel(vmClass = MainViewModel::class).apply { launch() }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.colors.primaryBackground)
     ) {
+
         NavHost(
             navigator = navigator,
             initialRoute = AppNavigation.Chats.route,
