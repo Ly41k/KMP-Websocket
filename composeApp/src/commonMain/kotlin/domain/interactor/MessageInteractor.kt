@@ -4,12 +4,14 @@ import core.store.ClearableBaseStore
 import domain.modes.presentation.message.MessageItem
 import domain.repository.MessageRepository
 import domain.viewmapper.toMessageItem
+import domain.viewmapper.toMessageModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 interface MessageInteractor {
     fun launchWebSocket(): Flow<Unit>
+    suspend fun sendMessage(message: MessageItem)
     suspend fun isSessionActive(): Boolean
     suspend fun closeWebSocket()
 }
@@ -24,6 +26,10 @@ class MessageInteractorImpl(
             .onEach { println("observeMessage - $it") }
             .onEach { updateMessageStore(it) }
             .map { }
+    }
+
+    override suspend fun sendMessage(message: MessageItem) {
+        messageRepository.sendMessage(message.toMessageModel())
     }
 
     override suspend fun closeWebSocket() {

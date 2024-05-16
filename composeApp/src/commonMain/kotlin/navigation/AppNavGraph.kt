@@ -11,9 +11,12 @@ import core.utils.Constants.NAV_ARGS
 import core.utils.navigateToChatWithArgs
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.PopUpTo
 import moe.tlaster.precompose.navigation.query
 import moe.tlaster.precompose.navigation.rememberNavigator
 import presentation.MainViewModel
+import presentation.chat.ChatViewModel
+import presentation.chat.models.ChatAction
 import presentation.chats.ChatsViewModel
 import presentation.chats.models.ChatsAction
 import ui.theme.AppTheme
@@ -42,8 +45,15 @@ fun AppNavGraph() {
             }
             scene(route = AppNavigation.Chat.route) { backStackEntry ->
                 val args: String? = backStackEntry.query<String>(NAV_ARGS)
-                println("args - $args")
-                ChatScreen()
+                val viewModel = koinViewModel(vmClass = ChatViewModel::class)
+                ChatScreen(viewModel, args) {
+                    when (it) {
+                        ChatAction.PopUp -> navigator.goBack(
+                            popUpTo = PopUpTo(route = AppNavigation.Chats.route, false),
+                            inclusive = false
+                        )
+                    }
+                }
             }
         }
     }

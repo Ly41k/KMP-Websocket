@@ -16,6 +16,6 @@ fun ChatsScreen(
     val state = viewModel.viewStates().collectAsState().value
     val action = viewModel.viewActions().observeAsState().value
 
-    MessagesView(state = state) { viewModel.obtainEvent(it) }
+    ChatsView(state = state) { viewModel.obtainEvent(it) }
     action?.let(navAction)
 }

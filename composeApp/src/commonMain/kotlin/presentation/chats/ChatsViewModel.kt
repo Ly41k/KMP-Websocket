@@ -23,8 +23,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 import moe.tlaster.precompose.viewmodel.viewModelScope
 import presentation.chats.models.ChatNavData
+import presentation.chats.models.ChatUnreadbleCount
 import presentation.chats.models.ChatsAction
 import presentation.chats.models.ChatsEvent
+import presentation.chats.models.ChatsViewData
+import presentation.chats.models.ChatsViewPartialState
+import presentation.chats.models.ChatsViewState
 
 class ChatsViewModel(
     private val chatsInteractor: ChatsInteractor,
@@ -48,7 +52,7 @@ class ChatsViewModel(
             )
                 .catch { exceptionService.logException(it) }
                 .runningFold(ChatsViewState(), ::viewStateReducer)
-                .flowOn(Dispatchers.IO)
+                .flowOn(Dispatchers.IO) // TODO need to used custom Dispatchers via Koin
                 .stateIn(
                     scope = viewModelScope,
                     started = Eagerly,
@@ -72,7 +76,7 @@ class ChatsViewModel(
                 itemModels = prevState.chatsViewData.itemModels.map { chatItem ->
                     changes.items.firstOrNull { lastMessageItem ->
                         lastMessageItem.chatId == chatItem.id
-                    }?.let { chatItem.copy(lastMessage = it.message) } ?: chatItem
+                    }?.let { chatItem.copy(lastMessage = it.message, authorLastMessage = it.userId) } ?: chatItem
                 }
             )
         )

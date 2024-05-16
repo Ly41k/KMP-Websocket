@@ -1,4 +1,4 @@
-package presentation.chats
+package presentation.chats.models
 
 sealed interface ChatsViewPartialState {
     data object ChatsDataLoading : ChatsViewPartialState
@@ -8,5 +8,10 @@ sealed interface ChatsViewPartialState {
     data class ChatUnreadbleCountLoaded(val items: List<ChatUnreadbleCount>) : ChatsViewPartialState
 }
 
-data class ChatLastMessageItem(val chatId: Int, val message: String?)
+data class ChatLastMessageItem(
+    val chatId: Int,
+    val userId: String,
+    val message: String?
+) //TODO need to change this class to MessageItem
+
 data class ChatUnreadbleCount(val chatId: Int, val count: Int)

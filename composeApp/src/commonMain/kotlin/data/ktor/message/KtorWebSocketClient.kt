@@ -15,13 +15,11 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.isActive
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 interface WebSocketClient {
     fun getStateStream(): Flow<String>
     suspend fun isSessionActive(): Boolean
-    suspend fun sendAction(action: InputMessage)
+    suspend fun sendMessage(message: String)
     suspend fun close()
 }
 
@@ -47,10 +45,8 @@ class KtorWebSocketClient(private val httpClient: HttpClient) : WebSocketClient 
         return session?.isActive == true
     }
 
-    override suspend fun sendAction(action: InputMessage) {
-        session?.outgoing?.send(
-            Frame.Text(Json.encodeToString(action))
-        )
+    override suspend fun sendMessage(message: String) {
+        session?.outgoing?.send(Frame.Text(message))
     }
 
     override suspend fun close() {

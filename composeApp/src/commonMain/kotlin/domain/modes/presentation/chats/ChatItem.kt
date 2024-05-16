@@ -5,6 +5,7 @@ data class ChatItem(
     val name: String,
     val iconUrl: String,
     val lastMessage: String? = null,
+    val authorLastMessage: String? = null,
     val unreadCount: Int = 0
 ) {
     fun getUnreadMessageCount(): String? {

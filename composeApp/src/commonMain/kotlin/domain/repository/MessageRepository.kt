@@ -6,11 +6,13 @@ import domain.mapper.toMessageModel
 import domain.modes.domain.message.MessageModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 interface MessageRepository {
     fun initMessageWebSocket(): Flow<MessageModel>
     suspend fun isSessionActive(): Boolean
+    suspend fun sendMessage(model: MessageModel)
     suspend fun closeMessageWebSocket()
 }
 
@@ -27,6 +29,9 @@ class MessageRepositoryImpl(
         return webSocketClient.isSessionActive()
     }
 
+    override suspend fun sendMessage(model: MessageModel) {
+        webSocketClient.sendMessage(json.encodeToString(model))
+    }
 
     override suspend fun closeMessageWebSocket() {
         webSocketClient.close()

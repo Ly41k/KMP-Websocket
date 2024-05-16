@@ -12,13 +12,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import presentation.chats.ChatsViewState
 import presentation.chats.models.ChatsEvent
+import presentation.chats.models.ChatsViewState
 import ui.theme.AppTheme
 import ui.widgets.TopAppBarView
 
 @Composable
-fun MessagesView(
+fun ChatsView(
     state: ChatsViewState,
     eventHandler: (ChatsEvent) -> Unit
 ) {
